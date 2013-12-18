@@ -120,7 +120,7 @@ var server = http.createServer(function(req, res) {
       if(search.get(qp[0]))
         replace_html("error.html", {"MSG":("Should have " + search.args(qp[0]) + " instead of " +
                                            (qp.length - 1) + " arguments for the '" + qp[0] + "' engine."),
-                                    "COLOR":"red"});
+                                    "STYLE":"color:red"});
       else
         pipe_html('./define.html');
     }
@@ -130,7 +130,7 @@ var server = http.createServer(function(req, res) {
     var args = q.define.split(/\s+/);
     if(args.length !== 2)
       replace_html("error.html", {"MSG":"Your definition is wrong! Should have 2 Arguments",
-                                  "COLOR":"red"});
+                                  "STYLE":"color:red"});
     else {
       search.set(args[0], args[1]);
       redirect_to('/');
@@ -142,7 +142,7 @@ var server = http.createServer(function(req, res) {
     for(var key in search.engines)
       keys.push(key);
     replace_html("error.html", {"MSG":("Keys: " + keys.join(", ")),
-                                "COLOR":"#333"});
+                                "STYLE":""});
   }
 
   else if(parsed.href === "/define")
@@ -150,6 +150,9 @@ var server = http.createServer(function(req, res) {
 
   else if(parsed.href === "/search.xml")
     pipe_html('./search.xml');
+
+  else if(parsed.href === "/search.css")
+    pipe_html('./search.css');
 
   else {
     pipe_html('./search.html');

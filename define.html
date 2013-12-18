@@ -1,12 +1,21 @@
 <html>
   <head>
     <title>addis search</title>
+    <link rel="stylesheet" type="text/css" href="/search.css" />
   </head>
   <body>
+    <div id="menu">
+      <a href="/">back</a>
+    </div>
+    <h1>Define a new searchengine</h1>
     <form action="/" method="get">
-      <a href="/">search other</a>
       <input name="define" type="text" />
       <input value="define"    type="submit" />
     </form>
+    <p>
+      To define a new searchengine you should copy your wished
+      searchengine-link and replace the searchenginepattern with
+      "%s". Then type in for example "mytest http://test123.de/q=%s".
+    </p>
   </body>
 </html>

@@ -2,13 +2,21 @@
   <head>
     <title>addis search</title>
     <link rel="search" type="application/opensearchdescription+xml" title="Addis Search" href="/search.xml" />
+    <link rel="stylesheet" type="text/css" href="/search.css" />
   </head>
   <body>
-    <a href="/list">List of search options</a>
+    <div id="menu">
+      <a href="/list">List of keywords</a>
+      <a href="/define">Define new Search</a>
+    </div>
+    <h1>Addis local search!</h1>
     <form action="/" method="get">
       <input name="search" type="text" />
       <input value="go"    type="submit" />
     </form>
-    <a href="/define">Define new Search</a>
+    <p>
+      To use 'Addis local search!' you just type in a keyword and the relevant arguments it should have.
+      More informations about the keywords you can find in the <a href="/list">keywordlist</a>.
+    </p>
   </body>
 </html>
