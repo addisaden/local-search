@@ -76,12 +76,27 @@ var server = http.createServer(function(req, res) {
     index.pipe(res);
   }
 
-  var error_html = function(msg) {
+  var replace_html = function(filename, replaces) {
+    var index = fs.createReadStream(filename);
+
+    var manipulate_chunk = function(chunk) {
+      if(chunk) {
+        var chunk_result = chunk;
+        for(var i in replaces)
+          chunk_result = chunk_result.toString().replace(i, replaces[i]);
+        return chunk_result;
+      }
+      else
+        return '';   
+    }
+
     res.writeHead(200, {'Content-Type':'text/html'});
-    res.write('<html><head><title>addis search</title></head><body>');
-    res.write('<a href="/">search again</a>');
-    res.write('<h1 style="color:red">' + msg + '</h1>');
-    res.end('</body></html>');
+    index.on("data", function(chunk) {
+      res.write(manipulate_chunk(chunk));
+    });
+    index.on("end", function(chunk) {
+      res.end(manipulate_chunk(chunk));
+    });
   }
 
   var redirect_to = function(redirection) {
@@ -101,7 +116,8 @@ var server = http.createServer(function(req, res) {
   else if(q.define) {
     var args = q.define.split(/\s+/);
     if(args.length !== 2)
-      error_html("Your definition is wrong! Should have 2 Arguments");
+      replace_html("error.html", {"MSG":"Your definition is wrong! Should have 2 Arguments",
+                                  "COLOR":"red"});
     else {
       search.set(args[0], args[1]);
       redirect_to('/');
@@ -112,7 +128,8 @@ var server = http.createServer(function(req, res) {
     var keys = [];
     for(var key in search.engines)
       keys.push(key);
-    error_html("Keys: " + keys.join(", "));
+    replace_html("error.html", {"MSG":("Keys: " + keys.join(", ")),
+                                "COLOR":"#333"});
   }
 
   else if(parsed.href === "/define")
