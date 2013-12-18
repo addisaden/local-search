@@ -141,7 +141,7 @@ var server = http.createServer(function(req, res) {
     var keys = [];
     for(var key in search.engines)
       keys.push("" + key + "(" + (search.args(key) ? search.args(key) : 0) + ")");
-    replace_html("error.html", {"MSG":("Keys: " + keys.join(", ")),
+    replace_html("error.html", {"MSG":("Keys: " + keys.sort().join(", ")),
                                 "STYLE":""});
   }
 
