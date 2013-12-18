@@ -1,4 +1,5 @@
 var http = require('http'),
+    repl = require('repl'),
     fs = require('fs'),
     querystring = require('querystring'),
     url = require('url');
@@ -24,7 +25,7 @@ var search = {
     var engine = this.get(s);
     if(engine) {
       var m = engine.match(/%s/g);
-      if(m === null) return 0;
+      if(!m) return 0;
       return m.length;
     } else {
       this.output("Engine '" + s + "' is not defined.");
@@ -35,17 +36,17 @@ var search = {
     var engine = this.get(s);
     var arg_length = this.args(s);
     if(!engine) {
-      this.output("Engine '" + s + "' is not defined.");
       return null;
     }
 
     if(arg_length === 0)
       return engine;
 
-    if((arg_length + 1) !== arguments.length) {
+    if(arg_length !== (arguments.length - 1)) {
       this.output("There have to be " + arg_length + " arguments for '" + s + "' engine.");
       return null;
     }
+
     var result = '';
     for(i = 0, q = engine.split("%s"); i < arg_length; i++) {
       result = result.concat(q[i], this.pre(arguments[i + 1]));
@@ -54,12 +55,18 @@ var search = {
     }
     return result;
   },
-  q: function(query) {
+  qparse: function(query) {
     var all = query.split(/\s+/);
     var engine = all[0];
     var rest = all.splice(1);
-    rest = rest.join(' ').split(/\s*,+\s*/);
-    return this.exec.apply(this, [engine].concat(rest));
+    rest = rest.join(' ').replace(/^\s+/, '').replace(/\s+$/, '').split(/\s*,+\s*/);
+    if(rest.length > 0 && !(rest.length == 1 && '' === rest[0]))
+      return [engine].concat(rest);
+    else
+      return [engine];
+  },
+  q: function(query) {
+    return this.exec.apply(this, this.qparse(query));
   }
 };
 
@@ -109,7 +116,13 @@ var server = http.createServer(function(req, res) {
     if(location_redirect) {
       redirect_to(location_redirect);
     } else {
-      pipe_html('./define.html');
+      var qp = search.qparse(q.search);
+      if(search.get(qp[0]))
+        replace_html("error.html", {"MSG":("Should have " + search.args(qp[0]) + " instead of " +
+                                           (qp.length - 1) + " arguments for the '" + qp[0] + "' engine."),
+                                    "COLOR":"red"});
+      else
+        pipe_html('./define.html');
     }
   }
 
@@ -146,3 +159,4 @@ var server = http.createServer(function(req, res) {
 server.listen(7777);
 
 console.log("Server listen to http://localhost:7777/");
+repl.start(">> ").context.search = search;
