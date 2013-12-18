@@ -1,5 +1,5 @@
 # Startup
 
-  >> node search.js
+  node search.js
 
-Browse to [http://localhost:7777/]
+Browse to [http://localhost:7777/](http://localhost:7777/)
