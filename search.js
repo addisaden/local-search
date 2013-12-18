@@ -140,7 +140,7 @@ var server = http.createServer(function(req, res) {
   else if(parsed.href === "/list") {
     var keys = [];
     for(var key in search.engines)
-      keys.push(key);
+      keys.push("" + key + "(" + (search.args(key) ? search.args(key) : 0) + ")");
     replace_html("error.html", {"MSG":("Keys: " + keys.join(", ")),
                                 "STYLE":""});
   }
