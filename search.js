@@ -141,7 +141,23 @@ var server = http.createServer(function(req, res) {
     var keys = [];
     for(var key in search.engines)
       keys.push("" + key + "(" + (search.args(key) ? search.args(key) : 0) + ")");
-    replace_html("error.html", {"MSG":("Keys: " + keys.sort().join(", ")),
+    keys = keys.sort();
+    var create_string = "";
+    var last_char = null;
+    for(var key in keys) {
+      if(last_char !== null) {
+        if(last_char === keys[key][0]) {
+          create_string += ", ";
+        } else {
+          last_char = keys[key][0];
+          create_string += "<br />";
+        }
+      } else {
+        last_char = keys[key][0];
+      }
+      create_string += keys[key];
+    }
+    replace_html("error.html", {"MSG":("Keys:<br /><br />" + create_string),
                                 "STYLE":""});
   }
 
