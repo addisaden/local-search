@@ -161,6 +161,11 @@ var server = http.createServer(function(req, res) {
                                 "STYLE":""});
   }
 
+  else if(parsed.href === "/export") {
+    res.writeHead(200, {'Content-Type':'text/html'});
+    res.end(JSON.stringify(search.engines));
+  }
+
   else if(parsed.href === "/define")
     pipe_html('./define.html');
 
