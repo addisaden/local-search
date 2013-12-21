@@ -1,10 +1,10 @@
 var http = require('http'),
     net = require('net')
-    repl = require('repl'),
     fs = require('fs'),
     querystring = require('querystring'),
     url = require('url'),
-    search = require('./lib/search.js');
+    search = require('./lib/search.js'),
+    telnet_server = require('./lib/server-telnet.js');
 
 // run search.pre = querystring.escape for urls
 search.pre = querystring.escape;
@@ -121,14 +121,5 @@ server.listen(7777);
 console.log("Server listen to http://localhost:7777/");
 // repl.start(">> ").context.search = search;
 
-net.createServer(function(socket) {
-  var telnetrepl = repl.start({
-    prompt: "local search engine >> ",
-    input: socket,
-    output: socket
-  }).on('exit', function() {
-    socket.end();
-  });
-  telnetrepl.context.search = search;
-}).listen(7778, "127.0.0.1");
-console.log("Telnet-Server listen to localhost:7778");
+telnet_server.listen(search, 7778, "127.0.0.1");
+
