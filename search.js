@@ -195,5 +195,5 @@ net.createServer(function(socket) {
     socket.end();
   });
   telnetrepl.context.search = search;
-}).listen(7778);
+}).listen(7778, "127.0.0.1");
 console.log("Telnet-Server listen to localhost:7778");
