@@ -1,5 +1,4 @@
 var http = require('http'),
-    net = require('net')
     fs = require('fs'),
     querystring = require('querystring'),
     url = require('url'),
