@@ -1,3 +1,4 @@
 *.swp
 search.json
 *.log
+search_backup.sh

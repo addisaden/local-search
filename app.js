@@ -8,5 +8,5 @@ var querystring = require('querystring'),
 search.pre = querystring.escape;
 
 http_server.listen(search, 7777, "localhost");
-telnet_server.listen(search, 7778, "localhost");
-repl.start(">> ").context.search = search;
+// telnet_server.listen(search, 7778, "localhost");
+// repl.start(">> ").context.search = search;
