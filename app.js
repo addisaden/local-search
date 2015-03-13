@@ -7,6 +7,6 @@ var querystring = require('querystring'),
 // run search.pre = querystring.escape for urls
 search.pre = querystring.escape;
 
-http_server.listen(search, 7777, "localhost");
+http_server.listen(search, 7777, "0.0.0.0");
 // telnet_server.listen(search, 7778, "localhost");
 // repl.start(">> ").context.search = search;
